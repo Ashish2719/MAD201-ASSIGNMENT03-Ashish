@@ -1,122 +1,195 @@
-import 'package:flutter/material.dart';
+/// MAD201 Assignment 3
+/// Ashish Prajapati, A00194842
+/// Main entry point for Movie Explorer App
 
-void main() {
-  runApp(const MyApp());
+import 'package:flutter/material.dart';
+import 'models/movie.dart';
+import 'screens/home_screen.dart';
+import 'screens/favorite_screen.dart';
+import 'screens/profile_screen.dart';
+import 'screens/movie_detail_screen.dart';
+
+void main() => runApp(const MovieExplorerApp());
+
+class MovieExplorerApp extends StatefulWidget {
+  const MovieExplorerApp({super.key});
+
+  @override
+  State<MovieExplorerApp> createState() => _MovieExplorerAppState();
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class _MovieExplorerAppState extends State<MovieExplorerApp> {
+  int _selectedIndex = 0;
 
-  // This widget is the root of your application.
+  // List of movies for the app
+  final List<Movie> movies = [
+    Movie(
+      title: "Interstellar",
+      genre: "Sci-Fi",
+      year: 2014,
+      description:
+          "A team travels through a wormhole in space in an attempt to ensure humanity's survival.",
+      imagePath: "assets/interstellar.jpg",
+    ),
+    Movie(
+      title: "Inception",
+      genre: "Action",
+      year: 2010,
+      description:
+          "A thief steals corporate secrets through dream-sharing technology.",
+      imagePath: "assets/inception.jpg",
+    ),
+    Movie(
+      title: "The Dark Knight",
+      genre: "Action",
+      year: 2008,
+      description:
+          "Batman faces the Joker, a criminal mastermind who wants to plunge Gotham City into chaos.",
+      imagePath: "assets/dark_knight.jpg",
+    ),
+    Movie(
+      title: "Arrival",
+      genre: "Sci-Fi",
+      year: 2016,
+      description:
+          "A linguist is recruited to communicate with alien visitors after mysterious spacecrafts land on Earth.",
+      imagePath: "assets/arrival.jpg",
+    ),
+    Movie(
+      title: "Coco",
+      genre: "Animation",
+      year: 2017,
+      description:
+          "Young Miguel seeks his family's history in the Land of the Dead during Dia de los Muertos.",
+      imagePath: "assets/coco.jpg",
+    ),
+    Movie(
+      title: "Parasite",
+      genre: "Thriller",
+      year: 2019,
+      description:
+          "An unemployed family becomes entangled in the life of a wealthy household.",
+      imagePath: "assets/parasite.jpg",
+    ),
+  ];
+
+  List<Movie> get favoriteMovies => movies.where((m) => m.isFavorite).toList();
+
+  void _navigateToDetail(Movie movie) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MovieDetailScreen(
+          movie: movie,
+          onFavoriteChanged: (fav) {
+            setState(() {
+              movie.isFavorite = fav;
+            });
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+      title: 'Movie Explorer',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Movie Explorer')),
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(color: Colors.blue),
+                child: Text(
+                  'Movie Explorer',
+                  style: TextStyle(color: Colors.white, fontSize: 24),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.home),
+                title: const Text('Home'),
+                onTap: () {
+                  setState(() {
+                    _selectedIndex = 0;
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.info),
+                title: const Text('About'),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text("About"),
+                      content: const Text(
+                        "Movie Explorer App made for MAD201 Assignment 3.",
+                      ),
+                      actions: [
+                        TextButton(
+                          child: const Text("OK"),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.contact_mail),
+                title: const Text('Contact Us'),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text("Contact Us"),
+                      content: const Text(
+                        "Developer: Your Name\nEmail: your@email.com",
+                      ),
+                      actions: [
+                        TextButton(
+                          child: const Text("OK"),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: (index) => setState(() {
+            _selectedIndex = index;
+          }),
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: "Favorites",
             ),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
           ],
         ),
+        body: _selectedIndex == 0
+            ? HomeScreen(movies: movies, onTap: _navigateToDetail)
+            : _selectedIndex == 1
+            ? FavoriteScreen(
+                favoriteMovies: favoriteMovies,
+                onRemoveFavorite: (movie) {
+                  setState(() {
+                    movie.isFavorite = false;
+                  });
+                },
+              )
+            : const ProfileScreen(),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
