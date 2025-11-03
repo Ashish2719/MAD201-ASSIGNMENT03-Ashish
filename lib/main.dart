@@ -1,6 +1,7 @@
 /// MAD201 Assignment 3
 /// Ashish Prajapati, A00194842
 /// Main entry point for Movie Explorer App
+library;
 
 import 'package:flutter/material.dart';
 import 'models/movie.dart';

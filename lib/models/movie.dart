@@ -1,6 +1,7 @@
 /// MAD201 Assignment 3
-/// Your Name, Student ID
+///  Ashish Prajapati, A00194842
 /// Movie model representing each movie in the app
+library;
 
 class Movie {
   final String title;
